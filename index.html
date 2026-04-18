@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SP24 Student Work — ARFD 106 Digital Literacy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── TOKENS ── */
+      :root {
+        --ink: #0f0f0f;
+        --paper: #f5f2eb;
+        --red: #c0392b;
+        --red-pale: #f8e8e6;
+        --grey: #888;
+        --border: #d8d3c8;
+        --code-bg: #e8e4db;
+        --font-body: "Fraunces", Georgia, serif;
+        --font-mono: "DM Mono", "Courier New", monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--font-body);
+        background: var(--paper);
+        color: var(--ink);
+        font-size: 17px;
+        line-height: 1.7;
+      }
+
+      a {
+        color: var(--red);
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── HEADER ── */
+      header {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 72px 64px 56px;
+        position: relative;
+        overflow: hidden;
+      }
+      header::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: var(--red);
+        opacity: 0.07;
+      }
+      header::after {
+        content: "";
+        position: absolute;
+        bottom: -80px;
+        left: 80px;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0.025;
+      }
+      .header-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 14px;
+      }
+      header h1 {
+        font-size: clamp(28px, 4.5vw, 54px);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.1;
+        max-width: 640px;
+        margin-bottom: 20px;
+      }
+      header p {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: #888;
+        max-width: 520px;
+        line-height: 1.65;
+      }
+
+      /* ── PROJECT FILTER NAV ── */
+      .filter-bar {
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        padding: 0 64px;
+        display: flex;
+        align-items: center;
+        gap: 0;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .filter-btn {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        padding: 16px 20px;
+        cursor: pointer;
+        color: var(--grey);
+        transition:
+          color 0.15s,
+          border-color 0.15s;
+        white-space: nowrap;
+      }
+      .filter-btn:hover {
+        color: var(--ink);
+      }
+      .filter-btn.active {
+        color: var(--red);
+        border-bottom-color: var(--red);
+      }
+
+      /* ── MAIN ── */
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 56px 40px 100px;
+      }
+
+      /* ── PROJECT SECTION ── */
+      .project-section {
+        margin-bottom: 80px;
+      }
+      .project-section.hidden {
+        display: none;
+      }
+
+      .project-header {
+        display: flex;
+        align-items: baseline;
+        gap: 20px;
+        margin-bottom: 8px;
+      }
+      .project-header h2 {
+        font-size: 28px;
+        font-weight: 700;
+      }
+      .project-count {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--grey);
+        letter-spacing: 0.1em;
+      }
+      .project-rule {
+        width: 40px;
+        height: 2px;
+        background: var(--red);
+        margin: 10px 0 24px;
+      }
+      .project-description {
+        max-width: 680px;
+        font-size: 15px;
+        color: #444;
+        line-height: 1.75;
+        margin-bottom: 36px;
+        border-left: 2px solid var(--border);
+        padding-left: 20px;
+      }
+      .project-description p {
+        margin-bottom: 10px;
+      }
+      .project-description p:last-child {
+        margin-bottom: 0;
+      }
+      .project-description a {
+        color: var(--red);
+      }
+
+      /* ── WORK GRID ── */
+      .work-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 28px;
+      }
+
+      /* ── WORK CARD ── */
+      .work-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition:
+          border-color 0.2s,
+          transform 0.15s,
+          box-shadow 0.2s;
+      }
+      .work-card:hover {
+        border-color: #bbb;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Image works */
+      .work-media {
+        position: relative;
+        background: var(--code-bg);
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      .work-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+      .work-card:hover .work-media img {
+        transform: scale(1.03);
+      }
+
+      /* Video works */
+      .work-media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .work-media.video-media {
+        aspect-ratio: 16/9;
+        background: #111;
+      }
+
+      /* Placeholder for missing/unknown file type */
+      .media-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: var(--code-bg);
+        color: var(--grey);
+        font-family: var(--font-mono);
+        font-size: 12px;
+      }
+      .media-placeholder .file-icon {
+        font-size: 36px;
+        opacity: 0.4;
+      }
+
+      /* Expand overlay on image click */
+      .work-media .expand-hint {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        padding: 4px 10px;
+        border-radius: 2px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .work-media:hover .expand-hint {
+        opacity: 1;
+      }
+
+      /* Card meta */
+      .work-meta {
+        padding: 18px 20px 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .work-project-tag {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--red);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .work-project-tag::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--red);
+        opacity: 0.6;
+        flex-shrink: 0;
+      }
+      .work-title {
+        font-size: 19px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+      .work-filename {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: #bbb;
+        margin-top: 4px;
+        word-break: break-all;
+      }
+
+      /* ── LIGHTBOX ── */
+      .lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.92);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .lightbox.open {
+        display: flex;
+      }
+      .lightbox-inner {
+        position: relative;
+        max-width: 90vw;
+        max-height: 90vh;
+      }
+      .lightbox-inner img {
+        max-width: 90vw;
+        max-height: 86vh;
+        object-fit: contain;
+        display: block;
+        border-radius: 2px;
+      }
+      .lightbox-close {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 28px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        opacity: 0.7;
+        transition: opacity 0.15s;
+      }
+      .lightbox-close:hover {
+        opacity: 1;
+      }
+      .lightbox-caption {
+        margin-top: 12px;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: #888;
+        letter-spacing: 0.08em;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 32px 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .footer-course {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--grey);
+        letter-spacing: 0.06em;
+      }
+      .footer-course strong {
+        color: var(--ink);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 700px) {
+        header {
+          padding: 48px 28px 40px;
+        }
+        .filter-bar {
+          padding: 0 16px;
+          overflow-x: auto;
+        }
+        main {
+          padding: 36px 20px 80px;
+        }
+        .work-grid {
+          grid-template-columns: 1fr;
+        }
+        footer {
+          padding: 24px 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── HEADER ── -->
+    <header>
+      <div class="header-eyebrow">
+        ARFD 106 · Digital Literacy · Spring 2024
+      </div>
+      <h1>Student Work Examples</h1>
+      <p>
+        Selected work from the Digital Literacy Foundation Course — Photoshop,
+        Illustrator, and After Effects projects exploring counterfactual
+        history, the attention economy, and motion.
+      </p>
+    </header>
+
+    <!-- ── FILTER BAR ── -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All Work</button>
+      <button class="filter-btn" data-filter="counterfactual-history">
+        Counterfactual History
+      </button>
+      <button class="filter-btn" data-filter="attention-economy">
+        The Attention Economy
+      </button>
+      <button class="filter-btn" data-filter="redux">Redux</button>
+    </div>
+
+    <!-- ── MAIN ── -->
+    <main>
+      <!-- ═══ PROJECT 1: COUNTERFACTUAL HISTORY ═══ -->
+      <section class="project-section" data-project="counterfactual-history">
+        <div class="project-header">
+          <h2>Counterfactual History</h2>
+          <span class="project-count">1 work</span>
+        </div>
+        <div class="project-rule"></div>
+        <div class="project-description">
+          <p>
+            Create a layered Photoshop image that explores either
+            <a
+              href="https://en.wikipedia.org/wiki/Counterfactual_history"
+              target="_blank"
+              >counterfactual history</a
+            >
+            or
+            <a
+              href="https://en.wikipedia.org/wiki/Speculative_fiction"
+              target="_blank"
+              >speculative fiction</a
+            >
+            — a kind of Time Machine. Look into moments in history you might
+            want to change. Find an event and imagine different outcomes. What
+            would have changed, and how can you show it visually?
+          </p>
+          <p>
+            Photography has always been capable of fiction: from Soviet darkroom
+            retouching that erased political enemies to today's AI generation.
+            This project places students in that tradition.
+          </p>
+        </div>
+
+        <div class="work-grid">
+          <!-- Work 1: Apollo 11 -->
+          <div class="work-card">
+            <div
+              class="work-media"
+              onclick="
+                openLightbox(
+                  'assets/bellaiyana_172077_17232870_Creativeproject.jpeg',
+                  'Apollo 11 — Counter Factual History',
+                )
+              "
+            >
+              <img
+                src="assets/bellaiyana_172077_17232870_Creativeproject.jpeg"
+                alt="Apollo 11 — Counterfactual History"
+                loading="lazy"
+              />
+              <span class="expand-hint">↗ Expand</span>
+            </div>
+            <div class="work-meta">
+              <div class="work-project-tag">Counterfactual History</div>
+              <div class="work-title">Apollo 11</div>
+              <div class="work-filename">
+                bellaiyana_172077_17232870_Creativeproject.jpeg
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ PROJECT 2: THE ATTENTION ECONOMY ═══ -->
+      <section class="project-section" data-project="attention-economy">
+        <div class="project-header">
+          <h2>The Attention Economy</h2>
+          <span class="project-count">3 works</span>
+        </div>
+        <div class="project-rule"></div>
+        <div class="project-description">
+          <p>
+            In 1971, Herbert A. Simon wrote:
+            <em>"A wealth of information creates a poverty of attention."</em>
+            This project asks students to respond to the attention economy
+            through Illustrator — how digital platforms compete for and monetise
+            our time, focus, and data.
+          </p>
+          <p>
+            Possible approaches included typographically-focused work, data
+            illustration, surveillance mapping, and images that help resist or
+            reflect on our own complicity. Submitted in two iterations with a
+            one-on-one critique between them.
+          </p>
+        </div>
+
+        <div class="work-grid">
+          <!-- Work 2: JFK -->
+          <div class="work-card">
+            <div
+              class="work-media"
+              onclick="
+                openLightbox(
+                  'assets/fischerthomas_LATE_151324_17343103_fischer_creativeproject1Large.jpeg',
+                  'JFK — The Attention Economy',
+                )
+              "
+            >
+              <img
+                src="assets/fischerthomas_LATE_151324_17343103_fischer_creativeproject1Large.jpeg"
+                alt="JFK — The Attention Economy"
+                loading="lazy"
+              />
+              <span class="expand-hint">↗ Expand</span>
+            </div>
+            <div class="work-meta">
+              <div class="work-project-tag">The Attention Economy</div>
+              <div class="work-title">JFK</div>
+              <div class="work-filename">
+                fischerthomas_LATE_151324_17343103_fischer_creativeproject1Large.jpeg
+              </div>
+            </div>
+          </div>
+
+          <!-- Work 3: Attention Economy -->
+          <div class="work-card">
+            <div
+              class="work-media"
+              onclick="
+                openLightbox(
+                  'assets/khateebamal_LATE_157391_17682593_Midsemester Project-Khateeb.png',
+                  'Attention Economy — The Attention Economy',
+                )
+              "
+            >
+              <img
+                src="assets/khateebamal_LATE_157391_17682593_Midsemester Project-Khateeb.png"
+                alt="Attention Economy — The Attention Economy"
+                loading="lazy"
+              />
+              <span class="expand-hint">↗ Expand</span>
+            </div>
+            <div class="work-meta">
+              <div class="work-project-tag">The Attention Economy</div>
+              <div class="work-title">Attention Economy</div>
+              <div class="work-filename">
+                khateebamal_LATE_157391_17682593_Midsemester Project-Khateeb.png
+              </div>
+            </div>
+          </div>
+
+          <!-- Work 4: Data Sale -->
+          <div class="work-card">
+            <div
+              class="work-media"
+              onclick="
+                openLightbox(
+                  'assets/vidalnicky_LATE_149518_17825174_cambridgevidalrevised2.png',
+                  'Data Sale — The Attention Economy',
+                )
+              "
+            >
+              <img
+                src="assets/vidalnicky_LATE_149518_17825174_cambridgevidalrevised2.png"
+                alt="Data Sale — The Attention Economy"
+                loading="lazy"
+              />
+              <div class="media-placeholder">
+                <div class="file-icon">🖼</div>
+                <span>vidalnicky — Data Sale</span>
+                <span style="font-size: 10px; opacity: 0.6"
+                  >Asset to be linked</span
+                >
+              </div>
+            </div>
+            <div class="work-meta">
+              <div class="work-project-tag">The Attention Economy</div>
+              <div class="work-title">Data Sale</div>
+              <div class="work-filename">
+                vidalnicky_LATE_149518_17825174_cambridgevidalrevised2
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ PROJECT 3: REDUX ═══ -->
+      <section class="project-section" data-project="redux">
+        <div class="project-header">
+          <h2>Redux</h2>
+          <span class="project-count">2 works</span>
+        </div>
+        <div class="project-rule"></div>
+        <div class="project-description">
+          <p>
+            <em>Redux</em> means to bring back, or happen again. The creative
+            process is always a redux. Students returned to one of their earlier
+            projects — counterfactual history, the attention economy, or race
+            and technology — and developed it substantially further, introducing
+            time and motion through After Effects.
+          </p>
+          <p>
+            Submitted as a 5–15 second 720p h.264 .mp4, the work brings new
+            elements, rethought compositions, and a focus on rhythm and
+            transition.
+          </p>
+        </div>
+
+        <div class="work-grid">
+          <!-- Work 5: Get out (mp4) -->
+          <div class="work-card">
+            <div class="work-media video-media">
+              <video
+                controls
+                preload="metadata"
+                poster=""
+                aria-label="Get Out — Redux"
+              >
+                <source
+                  src="assets/bellaiyana_LATE_172077_17812264_redux_proj_final.mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video element.
+              </video>
+            </div>
+            <div class="work-meta">
+              <div class="work-project-tag">Redux</div>
+              <div class="work-title">Get Out</div>
+              <div class="work-filename">
+                bellaiyana_LATE_172077_17812264_redux_proj_final.mp4
+              </div>
+            </div>
+          </div>
+
+          <!-- Work 6: Sleep (mp4) -->
+          <div class="work-card">
+            <div class="work-media video-media">
+              <video
+                controls
+                preload="metadata"
+                poster=""
+                aria-label="Sleep — Redux"
+              >
+                <source
+                  src="assets/patelpriya_152744_17796261_attentioncomp.mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video element.
+              </video>
+            </div>
+            <div class="work-meta">
+              <div class="work-project-tag">Redux</div>
+              <div class="work-title">Sleep</div>
+              <div class="work-filename">
+                patelpriya_152744_17796261_attentioncomp.mp4
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ── LIGHTBOX ── -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+      <div class="lightbox-inner">
+        <button class="lightbox-close" onclick="closeLightbox()">
+          &times;
+        </button>
+        <img id="lightbox-img" src="" alt="" />
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+      <div class="footer-course">
+        <strong>ARFD 106</strong> · Digital Literacy Foundation Course ·
+        Montclair State University · SP24
+      </div>
+      <div
+        style="
+          font-family: var(--font-mono);
+          font-size: 11px;
+          color: var(--grey);
+        "
+      >
+        6 student works · 3 projects
+      </div>
+    </footer>
+
+    <script>
+      // ── FILTER ──────────────────────────────────────────────────────────────────
+      const filterBtns = document.querySelectorAll(".filter-btn");
+      const sections = document.querySelectorAll(".project-section");
+
+      filterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const filter = btn.dataset.filter;
+
+          filterBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          sections.forEach((sec) => {
+            if (filter === "all" || sec.dataset.project === filter) {
+              sec.classList.remove("hidden");
+            } else {
+              sec.classList.add("hidden");
+            }
+          });
+        });
+      });
+
+      // ── LIGHTBOX ────────────────────────────────────────────────────────────────
+      function openLightbox(src, caption) {
+        const lb = document.getElementById("lightbox");
+        const img = document.getElementById("lightbox-img");
+        const cap = document.getElementById("lightbox-caption");
+        img.src = src;
+        img.alt = caption;
+        cap.textContent = caption;
+        lb.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox(e) {
+        if (
+          e &&
+          e.target !== document.getElementById("lightbox") &&
+          !e.target.classList.contains("lightbox-close")
+        )
+          return;
+        document.getElementById("lightbox").classList.remove("open");
+        document.getElementById("lightbox-img").src = "";
+        document.body.style.overflow = "";
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          document.getElementById("lightbox").classList.remove("open");
+          document.getElementById("lightbox-img").src = "";
+          document.body.style.overflow = "";
+        }
+      });
+    </script>
+  </body>
+</html>
